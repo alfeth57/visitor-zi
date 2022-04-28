@@ -32,7 +32,13 @@ Route::post('add-petugas','ManagePetugasController@store')->name('add-petugas');
 Route::post('edit-petugas','ManagePetugasController@update')->name('edit-petugas');
 
 
-Route::get('/dashboard-visitor', function () {
-    return view('visitor.dashboard-visitor');
-})->name('dashboard-visitor');
+// Route::get('/dashboard-visitor', function () {
+//     return view('visitor.dashboard-visitor');
+// })->name('dashboard-visitor');
+
+//visitor dashboard
+Route::get('/dashboard-visitor','DashboardVisitorController@index')->name('dashboard-visitor');
+Route::post('checkin-post','DashboardVisitorController@store')->name('checkin-post');
+Route::post('revisi-register','DashboardVisitorController@revisiRegister')->name('revisi-register');
+//log history
 

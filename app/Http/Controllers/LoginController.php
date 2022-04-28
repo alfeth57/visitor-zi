@@ -25,8 +25,11 @@ class LoginController extends Controller
                 if(Hash::check($Password,$CekVisitor->password_visitor)){
                     Session::put('user',$CekVisitor->nama_lengkap_visitor);
                     Session::put('nik_visitor',$CekVisitor->nik_visitor);
-                    $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
-                    return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
+                    // $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
+                    // dd($CekVisitor, $VisitorCheckIn);
+                    // return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
+                    // return redirect('dashboard-visitor')->with( ['DataVisitor' => $CekVisitor, 'DataCheckIn' => $VisitorCheckIn] );
+                    return redirect('dashboard-visitor');
                 }else{
                     return back()->with('alert','Gagal Masuk! Password Salah');
                 }
