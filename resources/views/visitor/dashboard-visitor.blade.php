@@ -146,7 +146,7 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Data Registrasi Anda Ditolak ⛔</h5>
                             <p class="mb-4">
-                            Data anda ditolak oleh petugas data center dengan alasan nama tidak sesuai dengan KTP.
+                            Data anda ditolak oleh petugas data center dengan alasan {{$DataVisitor->rejected_alasan}}.
                             </p>
                             <p class="mb-4">
                             Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
@@ -259,11 +259,12 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
                             <p class="mb-4">
-                              Anda telah check in pada <span class="fw-bold" id="checkin_time">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
+                              Anda telah check in pada <span class="fw-bold" id="checkin_time">{{$DataCheckIn->checkin_time}}</span>{{$DataCheckIn->checkin_time}}. Perhatikan barang bawaan Anda
                               dan patuhi aturan di Data Center
+                              <br>
                             </p>
                             <span id="notif-status-nda"></span><br>
-                          <a href="javascript:;" id="button-check-out" class="btn btn-sm btn-primary">Check Out</a>
+                          <a href="{{route('checkout-visitor')}}" id="button-check-out" class="btn btn-sm btn-primary">Check Out</a>
                         </div>
                       </div>
                       <div class="col-sm-2 text-center text-sm-left">

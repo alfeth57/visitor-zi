@@ -13,8 +13,13 @@ use App\Models\Petugas_DC;
 class DashboardVisitorController extends Controller
 {
 
+    // function logHistory($input){
+    //     dd($input);
+    // }
     public function index()
     {
+
+        // logHistory("fauzi");
         //get session nik visitor
         $nikVisitor = Session::get('nik_visitor');
 
@@ -30,7 +35,7 @@ class DashboardVisitorController extends Controller
         //get status visitor
         // $statusVisitor = (Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first()) -> status_visitor;
         $DataVisitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
-        // dd($dataVisitor);
+        // dd($DataVisitor);
         
         // dd($nikVisitor);
         $tableHistory = DB::table('list_checkin')
@@ -46,6 +51,7 @@ class DashboardVisitorController extends Controller
     	return view('visitor.dashboard-visitor',['dataPetugas' => $dataPetugas, 'DataVisitor' => $DataVisitor,'tableHistory' => $tableHistory, 'DataCheckIn' => $VisitorCheckIn]);
     }
 
+    //checkin
     public function store(Request $request){
         
         $nikVisitor = Session::get('nik_visitor');
@@ -94,29 +100,79 @@ class DashboardVisitorController extends Controller
         //foto
         $Current = date('His-dmY');
         $FotoKtpVisitor = $request->file('foto_ktp');
-        $FotoKtpVisitorsName = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
-        $FotoKtpVisitor->move('dokumen',$FotoKtpVisitorsName);
         
-        // if (is_null($nomorHpVisitor)){
-        //     return back()->with('alert','nomor hp kosong');
-        // }
+        if ($FotoKtpVisitor==null){
+            // dd('data foto kosong');
+            
+            DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
+                ->update([
+                    'nik_visitor' => $nikVisitor
+                ]);
 
-        // dd($nikVisitorSession, $namaLengkapVisitor, $nikVisitor, $nomorHpVisitor, $asalInstansiVisitor, $FotoKtpVisitorsName);
+            DB::table('visitor')->where('nik_visitor',$nikVisitor)
+                ->update([
+                    'nama_lengkap_visitor' => $namaLengkapVisitor,
+                    'nomor_hp_visitor' => $nomorHpVisitor,
+                    'asal_instansi_visitor' => $asalInstansiVisitor,
+                    // 'foto_ktp_visitor' => $FotoKtpVisitorsName,
+                    'status_visitor' => 0
+                ]);
+            
+            return redirect('/dashboard-visitor');
+        }else{
+            $FotoKtpVisitorsName = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
+            $FotoKtpVisitor->move('dokumen',$FotoKtpVisitorsName);
+        
+            // if (is_null($nomorHpVisitor)){
+            //     return back()->with('alert','nomor hp kosong');
+            // }
+
+            // dd($nikVisitorSession, $namaLengkapVisitor, $nikVisitor, $nomorHpVisitor, $asalInstansiVisitor, $FotoKtpVisitorsName);
 
 
-        DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
-        ->update([
-            'nik_visitor' => $nikVisitor
-        ]);
+            DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
+                ->update([
+                    'nik_visitor' => $nikVisitor
+                ]);
 
-        DB::table('visitor')->where('nik_visitor',$nikVisitor)
-        ->update([
-            'nama_lengkap_visitor' => $namaLengkapVisitor,
-            'nomor_hp_visitor' => $nomorHpVisitor,
-            'asal_instansi_visitor' => $asalInstansiVisitor,
-            'foto_ktp_visitor' => $FotoKtpVisitorsName
-        ]);
+            DB::table('visitor')->where('nik_visitor',$nikVisitor)
+                ->update([
+                    'nama_lengkap_visitor' => $namaLengkapVisitor,
+                    'nomor_hp_visitor' => $nomorHpVisitor,
+                    'asal_instansi_visitor' => $asalInstansiVisitor,
+                    'foto_ktp_visitor' => $FotoKtpVisitorsName,
+                    'status_visitor' => 0
+                    ]);
+
+            return redirect('/dashboard-visitor');
+        }
+        
+    }
+
+    public function checkoutVisitor(){
+        $nikVisitorSession = Session::get('nik_visitor');
+        // dd('masukk', $nikVisitorSession);
+
+        $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitorSession])->latest()->first();
+        
+        $idCheckin = $VisitorCheckIn -> id_checkin;
+        // $checkinTime = $VisitorCheckIn -> checkin_time;
+        // dd($idCheckin); 
+
+        $dateCheckout = date('Y-m-d');
+        $dateCheckoutTimestamp = date('Y-m-d H:i:s');
+
+        DB::table('list_checkin')->where('id_checkin',$idCheckin)
+                ->update([
+                    'checkout_time' => $dateCheckoutTimestamp,
+                    'status_checkin' => 3
+                ]);
+
+
+        // dd($VisitorCheckIn, $dateCheckout, $dateCheckoutTimestamp);
 
         return redirect('/dashboard-visitor');
     }
+
+    
 }

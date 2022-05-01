@@ -36,9 +36,15 @@ Route::post('edit-petugas','ManagePetugasController@update')->name('edit-petugas
 //     return view('visitor.dashboard-visitor');
 // })->name('dashboard-visitor');
 
+//Route by Uzi
 //visitor dashboard
 Route::get('/dashboard-visitor','DashboardVisitorController@index')->name('dashboard-visitor');
 Route::post('checkin-post','DashboardVisitorController@store')->name('checkin-post');
 Route::post('revisi-register','DashboardVisitorController@revisiRegister')->name('revisi-register');
+Route::get('checkout-visitor','DashboardVisitorController@checkoutVisitor')->name('checkout-visitor');
+
+//Profil Visitor
+Route::post('update-profil-visitor','ProfilVisitorController@updateProfil')->name('update-profil-visitor');
+
 //log history
 
