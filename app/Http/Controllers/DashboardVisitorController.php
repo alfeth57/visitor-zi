@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Visitor;
 use App\Models\list_checkin;
 use App\Models\Petugas_DC;
+use App\Models\log_activity;
 
 
 class DashboardVisitorController extends Controller
@@ -84,6 +85,15 @@ class DashboardVisitorController extends Controller
                 return back()->with('alert','Tidak bisa Checkin, akun anda belum approve register/rejected/masih checkin');
             }
         }
+
+        //log activity checkin visitor
+        $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitor])->latest()->first();
+        log_activity::create([
+            'activity' => 'checkin',
+            'id_actor' => $nikVisitor, //nik visitor
+            'id_object' => $VisitorCheckIn->id_checkin, //id checkin
+        ]);
+
         return redirect('/dashboard-visitor');
     }
 
