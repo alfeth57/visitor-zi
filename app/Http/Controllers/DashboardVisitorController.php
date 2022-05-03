@@ -134,6 +134,11 @@ class DashboardVisitorController extends Controller{
                 ]);
         }
 
+        //put new nik visitor session
+        if ($nikVisitor!=$nikVisitorSession){
+            Session::put('nik_visitor',$nikVisitor);
+        }
+        
         //log activity revisi register visitor
         log_activity::create([
             'activity' => 'revisi register',

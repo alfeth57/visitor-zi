@@ -14,6 +14,7 @@ class ProfilVisitorController extends Controller
     public function index(){
         //session and get data visitor
         $nikVisitor = Session::get('nik_visitor');
+        // dd($nikVisitor);
         $Visitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
 
         return view('visitor.profil')->with('DataVisitor',$Visitor);
@@ -44,6 +45,10 @@ class ProfilVisitorController extends Controller
             // 'foto_ktp_visitor' => $FotoKtpVisitorsName
         ]);
 
+        //put new nik visitor session
+        if ($nikVisitor!=$nikVisitorSession){
+            Session::put('nik_visitor',$nikVisitor);
+        }
         //log activity update profile visitor
         log_activity::create([
             'activity' => 'update profile visitor',
