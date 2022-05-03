@@ -259,6 +259,8 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
                             <p class="mb-4">
+                              <!-- {{}} -->
+                              <!-- {{if ()}} -->
                               Anda telah check in pada <span class="fw-bold" id="checkin_time">{{$DataCheckIn->checkin_time}}</span>{{$DataCheckIn->checkin_time}}. Perhatikan barang bawaan Anda
                               dan patuhi aturan di Data Center
                               <br>

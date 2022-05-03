@@ -20,6 +20,16 @@ class DashboardVisitorController extends Controller{
         //get data checkin terakhir
         //todo, ga bisa masuk saat data checkin kosong
         $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitor])->latest()->first();
+        
+        // dd(gettype($VisitorCheckIn));
+        
+        // if($VisitorCheckIn==null){
+        //     $VisitorCheckIn -> checkin_time = date('Y-m-d H:i:s');
+        //     $VisitorCheckIn -> status_checkin = 100;
+        // }
+        // $VisitorCheckIn -> checkin_time = date('Y-m-d H:i:s');
+        // $VisitorCheckIn -> status_checkin = 100;
+        // dd($VisitorCheckIn);
 
     	//get data petugas
     	$dataPetugas = DB::table('petugas_dc')->get();
