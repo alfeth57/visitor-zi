@@ -146,7 +146,7 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Data Registrasi Anda Ditolak ⛔</h5>
                             <p class="mb-4">
-                            Data anda ditolak oleh petugas data center dengan alasan {{$DataVisitor->rejected_alasan}}.
+                            Data anda ditolak oleh petugas data center dengan alasan: {{$DataVisitor->rejected_alasan}}.
                             </p>
                             <p class="mb-4">
                             Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
@@ -314,7 +314,7 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Pengajuan Check In Anda Ditolak ⛔</h5>
                             <p class="mb-4">
-                            Pengajuan check in ditolak oleh petugas data center dengan alasan keperluan tidak penting.
+                            Pengajuan check in ditolak oleh petugas data center dengan alasan: {{$DataCheckIn->rejected_alasan}}.
                             </p>
                             <p class="mb-4">
                             Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
@@ -481,8 +481,8 @@ $niksession = Session::get('nik_visitor');
                   }
                   else if(status_visitor == 1){
                     if(status_checkin == 0){
-                      document.getElementById("waiting-approval-check-in").style.display = "none";
-                      document.getElementById("form-check-in").style.display = "show";
+                      document.getElementById("waiting-approval-check-in").style.display = "show";
+                      document.getElementById("form-check-in").style.display = "none";
                       document.getElementById("checked-in").style.display = "none";
                       document.getElementById("rejected-form").style.display = "none";
                       document.getElementById("rejected-check-in").style.display = "none";
@@ -503,7 +503,11 @@ $niksession = Session::get('nik_visitor');
                         document.getElementById("notif-status-nda").innerHTML = "Anda belum bisa check out karena file NDA belum diupload. Segera hubungi Petugas Data Center!";
                         document.getElementById("button-check-out").classList.add('disabled');
                       }
-                      else{
+                      if(status_nda == 2){
+                        document.getElementById("notif-status-nda").innerHTML = "Anda belum bisa check out karena file NDA expired. Segera hubungi Petugas Data Center!";
+                        document.getElementById("button-check-out").classList.add('disabled');
+                      }
+                      if(status_nda == 1){
                         document.getElementById("button-check-out").classList.remove('disabled');
                       }
                     }
@@ -517,6 +521,15 @@ $niksession = Session::get('nik_visitor');
                       document.getElementById("waiting-approval-data").style.display = "none";
                     }
                     else if(status_checkin == 3){ //checkout
+                      document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "show";
+                      document.getElementById("checked-in").style.display = "none";
+                      document.getElementById("rejected-form").style.display = "none";
+                      document.getElementById("rejected-check-in").style.display = "none";
+                      document.getElementById("rejected-notif").style.display = "none";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                    }
+                    else if(status_checkin == 99){ //if datacheckin kosong, diinject dari code 99
                       document.getElementById("waiting-approval-check-in").style.display = "none";
                       document.getElementById("form-check-in").style.display = "show";
                       document.getElementById("checked-in").style.display = "none";

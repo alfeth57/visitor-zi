@@ -20,7 +20,8 @@ class DashboardVisitorController extends Controller{
         //get data checkin terakhir
         //todo, ga bisa masuk saat data checkin kosong
         $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitor])->latest()->first();
-        
+        // dd($VisitorCheckIn);
+
         //Visitor Checkin for user table history checkin null
         if ($VisitorCheckIn==null){
           $VisitorCheckIn = new \stdClass();
@@ -28,6 +29,7 @@ class DashboardVisitorController extends Controller{
           //status if null
           $VisitorCheckIn->status_checkin = 99;
           $VisitorCheckIn->approval_timestamp = null;
+          $VisitorCheckIn->rejected_alasan = null;
         } 
 
     	//get data petugas
